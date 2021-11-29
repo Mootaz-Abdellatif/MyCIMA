@@ -47,7 +47,7 @@ router.post('/', async (req,res)=>{
         releaseDate : new Date(req.body.releaseDate),
         runtime : req.body.runtime,
         description : req.body.description,
-        author : req.body.author, 
+        author : req.body.author 
 
 
     })
@@ -87,8 +87,8 @@ function saveCover(movie, coverEncoded){
     if (coverEncoded == null ) return 
     const cover = JSON.parse(coverEncoded)
     if (coverEncoded != null && imageMimeTypes.includes(cover.type)){
-        serie.coverImage =  new Buffer.from(cover.data, 'base64')
-        serie.coverImageType = cover.type
+        movie.coverImage =  new Buffer.from(cover.data, 'base64')
+        movie.coverImageType = cover.type
     }
 }
 module.exports = router
