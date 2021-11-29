@@ -1,18 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const multer = require('multer')
 const path = require('path')
 const fs = require('fs') 
 const Serie = require('../models/serie')
-const uploadPath = path.join('public', Serie.coverImageBasePath)
 const Author = require('../models/author')
 const imageMimeTypes = ['image/jpeg', 'image/gif', 'image/png']
-const upload = multer({
-    dest: uploadPath, 
-    fileFilter: (req, file, callback) => {
-        callback(null, imageMimeTypes.includes(file.mimetype))
-    }
-})
+// const upload = multer({
+//     dest: uploadPath, 
+//     fileFilter: (req, file, callback) => {
+//         callback(null, imageMimeTypes.includes(file.mimetype))
+//     }
+// }) 
 
 // All series route
 router.get('/', async (req,res)=>{
@@ -45,32 +43,25 @@ router.get('/new', async (req,res)=>{
 })
 
 // Create Serie Route 
-router.post('/', upload.single('cover') , async (req,res)=>{
-    const fileName = req.file != null ? req.file.filename : null
+router.post('/', async (req,res)=>{
     const serie = new Serie({
         title : req.body.title,
         author : req.body.author,
         releaseDate : new Date(req.body.releaseDate),
         runtime : req.body.runtime,
-        coverImageName: fileName,
         description : req.body.description
     })
+    saveCover(serie, req.body.cover)
     try {
         const newSerie = await serie.save()
         res.redirect(`series`)
     } catch {
-        if (serie.coverImageName != null){
-            removeSerieCover(serie.coverImageName)
-        }
+        
         renderNewPage(res, serie, true)
     }
 })
 
-function removeSerieCover(fileName){
-    fs.unlink(path.join(uploadPath, fileName), err => {
-        if (err) console.error(err)
-    } )
-}
+
 
 async function renderNewPage(res, serie, hasError = false) {
     try { 
@@ -83,6 +74,15 @@ async function renderNewPage(res, serie, hasError = false) {
         res.render('series/new', params)
     } catch { 
         res.redirect('/series')
+    }
+}
+
+function saveCover(serie, coverEncoded){
+    if (coverEncoded == null ) return 
+    const cover = JSON.parse(coverEncoded)
+    if (coverEncoded != null && imageMimeTypes.includes(cover.type)){
+        serie.coverImage =  new Buffer.from(cover.data, 'base64')
+        serie.coverImageType = cover.type
     }
 }
 
