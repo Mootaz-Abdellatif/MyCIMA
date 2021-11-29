@@ -1,1 +1,9 @@
-Middle
+<h2>Recently added</h2>
+<div>
+    <% series.forEach(serie => { %>
+        <img height="200" width="150" src="<%= serie.coverImagePath %>">
+    <% }) %> 
+    <% movies.forEach(movie => { %>
+        <img height="200" width="150" src="<%= movie.coverImagePath %>">
+    <% }) %> 
+</div>

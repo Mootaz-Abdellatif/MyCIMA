@@ -1,0 +1,22 @@
+<h2>Search Series</h2>
+<form action="/series" method="GET">
+<div>
+<label>Title</label>
+<input type="text" name="title" value="<%= searchOptions.title %> "> 
+</div>
+<div>
+    <label>Release Before</label>
+    <input type="date" name="releasedBefore" value="<%= searchOptions.releasedBefore %> "> 
+</div>
+<div>
+    <label>Release After</label>
+    <input type="date" name="releasedAfter" value="<%= searchOptions.releasedAfter %> "> 
+</div>
+<button type="submit">Search</button>
+</form>
+<br>
+<div>
+<% series.forEach(serie => { %>
+    <img height="200" width="150" src="<%= serie.coverImagePath %>">
+<% }) %> 
+</div>

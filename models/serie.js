@@ -1,34 +1,25 @@
 const mongoose = require('mongoose')
 
-const coverImageBasePath = 'uploads/movieCovers'
+const coverImageBasePath = 'uploads/serieCovers'
 const path = require('path')
 
-const movieSchema = new mongoose.Schema({
+const serieSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true
     },
-    gender :{
-        type: String,
-        required: true
-    }, 
-    runtime :{
-        type: Number,
-        required: true
-    },
-    description: {
+    description:{
         type: String
-    },
+    }, 
     releaseDate:{
         type: Date,
         required: true
 
-    },
-    author:{
-        type: mongoose.Schema.Types.ObjectId, 
-        required : true,
-        ref: 'Author'
     }, 
+    runtime : {
+        type: Number,
+        required: true
+    },
     createdAt :{
         type: Date,
         required: true,
@@ -37,16 +28,22 @@ const movieSchema = new mongoose.Schema({
     coverImageName:{
         type: String,
         required: true
-    }
+    }, 
+    author:{
+        type: mongoose.Schema.Types.ObjectId, 
+        required : true,
+        ref: 'Author'
+    } 
+
     
 })
 
-movieSchema.virtual('coverImagePath').get(function(){
+serieSchema.virtual('coverImagePath').get(function(){
     if (this.coverImageName != null){
         return path.join('/', coverImageBasePath, this.coverImageName)
 
     }
 })
 
-module.exports = mongoose.model('Movie', movieSchema)
+module.exports = mongoose.model('Serie', serieSchema)
 module.exports.coverImageBasePath = coverImageBasePath
