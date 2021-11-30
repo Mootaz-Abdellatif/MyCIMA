@@ -54,7 +54,7 @@ router.post('/', async (req,res)=>{
     saveCover(serie, req.body.cover)
     try {
         const newSerie = await serie.save()
-        res.redirect(`series`)
+        res.redirect(`series/${newSerie.id}`)
     } catch {
         
         renderNewPage(res, serie, true)
@@ -73,17 +73,91 @@ router.get('/:id', async (req, res) =>{
     
 })
 
+router.get('/:id/edit', async (req, res)=>{
 
+    try{
+        const serie = await Serie.findById(req.params.id)
+        renderEditPage(res, serie)
 
+    } catch{
+
+        res.redirect('/')
+    }
+})
+
+// Update Serie Route 
+router.put('/:id', async (req,res)=>{
+    let serie 
+
+    try {
+        serie = await Serie.findById(req.params.id)
+        serie.title = req.body.title
+        serie.author = req.body.author
+        serie.releaseDate = new Date(req.body.releaseDate)
+        serie.runtime = req.body.runtime 
+        serie.description = req.body.description
+        if (req.body.cover != null && req.body.cover !== ''){
+            saveCover(serie, req.body.cover)
+        }
+        await serie.save()
+        res.redirect(`/series/${serie.id}`)
+    } catch (err){
+        console.log(err)
+        if (serie != null){
+            renderEditPage(res, serie, true)
+
+        }
+        else {
+            redirect('/')
+        }
+    }
+})
+// Delete serie page
+router.delete('/:id', async (req, res)=> {
+
+    let serie 
+    try{
+
+        serie = await Serie.findById(req.params.id)
+        await serie.remove()
+        res.redirect('/series')
+    } catch {
+        if (serie != null){
+            res.render('/series/show', {
+                serie : serie, 
+                errorMessage : 'Could not remove Serie'
+            })
+        } else {
+            res.redirect('/')
+        }
+
+    }
+})
 async function renderNewPage(res, serie, hasError = false) {
+    renderFormPage(res, serie, 'new', hasError)
+
+}
+async function renderEditPage(res, serie, hasError = false) {
+    renderFormPage(res, serie, 'edit', hasError)
+}
+async function renderFormPage(res, serie, form, hasError = false) {
     try { 
         const authors = await Author.find({})
         const params = {
             authors : authors, 
             serie : serie
         }
-        if (hasError) params.errorMessage = 'Error Creating Serie'
-        res.render('series/new', params)
+        if (hasError){
+            if (form === 'edit'){
+                params.errorMessage = 'Error Updating Serie'
+
+            }
+            else {
+                params.errorMessage = 'Error Creating Serie'
+
+            }
+        }
+        res.render(`series/${form}`, params)
     } catch { 
         res.redirect('/series')
     }

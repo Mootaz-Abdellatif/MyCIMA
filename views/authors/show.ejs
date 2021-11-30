@@ -5,14 +5,18 @@
 <% if (seriesByAuthor.length > 0) { %>
     <h2>Series by Author</h2> 
     <% seriesByAuthor.forEach(serie => { %>
+        <a href="/series/<%= serie.id %> ">
         <img height="200" width="150" src="<%= serie.coverImagePath %>">
+        </a>
     <% }) %>   
 
 <% } %> 
 <% if (moviesByAuthor.length > 0) { %>
     <h2>Movies by Author</h2> 
     <% moviesByAuthor.forEach(movie => { %>
+        <a href="/movies/<%= movie.id %> ">
         <img height="200" width="150" src="<%= movie.coverImagePath %>">
+        </a>
     <% }) %>   
      
 <% } %> 
