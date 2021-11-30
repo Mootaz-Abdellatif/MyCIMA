@@ -61,6 +61,18 @@ router.post('/', async (req,res)=>{
     }
 })
 
+router.get('/:id', async (req, res) =>{
+    try{
+        const serie = await Serie.findById(req.params.id).populate('author').exec()
+        res.render('series/show', { serie: serie })
+
+    } catch {
+        res.redirect('/')
+
+    }
+    
+})
+
 
 
 async function renderNewPage(res, serie, hasError = false) {

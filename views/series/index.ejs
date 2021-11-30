@@ -17,6 +17,8 @@
 <br>
 <div>
 <% series.forEach(serie => { %>
+    <a href="/series/<%= serie.id %>">
     <img height="200" width="150" src="<%= serie.coverImagePath %>">
+    </a>
 <% }) %> 
 </div>
