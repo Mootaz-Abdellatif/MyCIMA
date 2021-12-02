@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Author = require('../models/author')
-const Serie = require('../models/serie')
-const Movie = require('../models/movie')
+const Book = require('../models/book')
 
 
 // All authors
@@ -55,12 +54,10 @@ router.post('/', async (req,res)=>{
 router.get('/:id', async (req, res) => {
     try{
         const author = await Author.findById(req.params.id)
-        const series = await Serie.find({ author : author.id }).limit(6).exec()
-        const movies = await Movie.find({ author : author.id }).limit(6).exec()
+        const books = await Book.find({ author : author.id }).limit(6).exec()
         res.render('authors/show',{
             author: author,
-            seriesByAuthor : series,
-            moviesByAuthor : movies
+            booksByAuthor : books,
 
         })
 

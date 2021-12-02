@@ -1,33 +1,23 @@
 const mongoose = require('mongoose')
 
 
-
-const movieSchema = new mongoose.Schema({
+const bookSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true
     },
-    gender :{
-        type: String,
-        required: true
-    }, 
-    runtime :{
-        type: Number,
-        required: true
-    },
-    description: {
+    description:{
         type: String
-    },
-    releaseDate:{
+    }, 
+    publishDate:{
         type: Date,
         required: true
 
-    },
-    author:{
-        type: mongoose.Schema.Types.ObjectId, 
-        required : true,
-        ref: 'Author'
     }, 
+    pageCount : {
+        type: Number,
+        required: true
+    },
     createdAt :{
         type: Date,
         required: true,
@@ -40,15 +30,21 @@ const movieSchema = new mongoose.Schema({
     coverImageType:{
         type: String,
         required: true
-    }
+    },
+    author:{
+        type: mongoose.Schema.Types.ObjectId, 
+        required : true,
+        ref: 'Author'
+    } 
+
     
 })
 
-movieSchema.virtual('coverImagePath').get(function(){
+bookSchema.virtual('coverImagePath').get(function(){
     if (this.coverImage != null && this.coverImageType != null){
         return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage.toString('base64')}`
 
     }
 })
 
-module.exports = mongoose.model('Movie', movieSchema)
+module.exports = mongoose.model('Book', bookSchema)

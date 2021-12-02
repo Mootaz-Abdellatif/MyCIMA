@@ -1,22 +1,13 @@
 <h2 class="page-header"><%= author.name %> </h2>
-<a href="/authors/<%= author.id %>/edit ">Edit</a>
-<%- include('../partials/deleteForm',
-{ url: `/authors/${author.id}` }) %>
-<% if (seriesByAuthor.length > 0) { %>
-    <h2>Series by Author</h2> 
-    <% seriesByAuthor.forEach(serie => { %>
-        <a href="/series/<%= serie.id %> ">
-        <img height="200" width="150" src="<%= serie.coverImagePath %>">
-        </a>
-    <% }) %>   
+<div class="btn-row">
+    <a class="btn btn-primary" href="/authors/<%= author.id %>/edit ">Edit</a>
+    <%- include('../partials/deleteForm',
+    { url: `/authors/${author.id}` }) %>  
+</div>
 
-<% } %> 
-<% if (moviesByAuthor.length > 0) { %>
-    <h2>Movies by Author</h2> 
-    <% moviesByAuthor.forEach(movie => { %>
-        <a href="/movies/<%= movie.id %> ">
-        <img height="200" width="150" src="<%= movie.coverImagePath %>">
-        </a>
-    <% }) %>   
+<% if (booksByAuthor.length > 0) { %>
+    <h2>Books by Author</h2> 
      
+    <%- include('../partials/bookGrid', { books : booksByAuthor , large: true }) %> 
+
 <% } %> 

@@ -1,14 +1,9 @@
 <h2 class="page-header">Recently added</h2>
 <div>
     
-    <% series.forEach(serie => { %>
-        <a href="/series/<%= serie.id %> ">
-        <img height="200" width="150" src="<%= serie.coverImagePath %>">
-        </a>
-    <% }) %> 
-    <% movies.forEach(movie => { %>
-        <a href="/movies/<%= movie.id %> ">
-        <img height="200" width="150" src="<%= movie.coverImagePath %>">
-        </a>
-    <% }) %> 
+    <%- include('partials/bookGrid', { books : books , large: true }) %> 
+
+    
+
+    
 </div>

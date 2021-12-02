@@ -11,8 +11,7 @@ const methodOverride = require('method-override')
 
 const indexRouter = require('./routes/index')
 const authorRouter = require('./routes/authors')
-const movieRouter = require('./routes/movies')
-const serieRouter = require('./routes/series')
+const bookRouter = require('./routes/books')
 
 app.set("view engine", "ejs")
 app.set('views',__dirname + '/views')
@@ -31,8 +30,7 @@ db.once('open', ()=> console.log('Connected to mongoose'))
 
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
-app.use('/movies', movieRouter)
-app.use('/series', serieRouter)
+app.use('/books', bookRouter)
 
 
 
